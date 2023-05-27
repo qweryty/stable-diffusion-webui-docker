@@ -27,10 +27,17 @@ ENV DEBIAN_FRONTEND=noninteractive PIP_PREFER_BINARY=1
 
 RUN apt-get update && apt install fonts-dejavu-core rsync git jq moreutils aria2 -y && apt-get clean
 
+
 RUN --mount=type=cache,target=/cache --mount=type=cache,target=/root/.cache/pip \
   aria2c -x 5 --dir /cache --out torch-2.0.0-cp310-cp310-linux_x86_64.whl -c \
   https://download.pytorch.org/whl/cu118/torch-2.0.0%2Bcu118-cp310-cp310-linux_x86_64.whl && \
   pip install /cache/torch-2.0.0-cp310-cp310-linux_x86_64.whl torchvision --index-url https://download.pytorch.org/whl/cu118
+
+# Required by by webui-depthmap-scrip
+RUN apt install -y fontconfig libglfw3-dev libgles2-mesa-dev libglib2.0-0 xdg-utils
+# https://github.com/thygate/stable-diffusion-webui-depthmap-script/blob/main/install.py
+RUN --mount=type=cache,target=/cache --mount=type=cache,target=/root/.cache/pip \
+  pip install timm==0.6.12 matplotlib trimesh numba vispy rembg moviepy==1.0.2 transforms3d imageio imageio-ffmpeg networkx==2.5
 
 
 
