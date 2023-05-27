@@ -1,3 +1,5 @@
+# for image sequence input
+/input
 # for all of the stuff downloaded by transformers, pytorch, and others
 /.cache
 # for UIs
